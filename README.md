@@ -1,8 +1,10 @@
-# 🕹️ Pac-Man Clone for Seeed Wio Terminal
+# 🕹️ Pac-Man Clone for the Adafruit Fruit Jam
 
-A pixel-perfect Pac-Man clone built for the **Seeed Wio Terminal** using **CircuitPython 10**.
+A Pac-Man clone built for the **Adafruit Fruit Jam** using **CircuitPython 10**.
 
 ![Pac-Man on Wio Terminal](images/pac-wio.jpg)
+
+Forked from https://github.com/scarolan/pac-wio/tree/main
 
 ---
 
@@ -47,12 +49,10 @@ A pixel-perfect Pac-Man clone built for the **Seeed Wio Terminal** using **Circu
 
 ## 🛠️ Hardware Requirements
 
-- **[Seeed Wio Terminal](https://www.seeedstudio.com/Wio-Terminal-p-4509.html)**
-  - ATSAMD51P19 (ARM Cortex-M4F @ 120MHz)
-  - 192 KB RAM
-  - 2.4" LCD (320x240, used in portrait mode: 240x320)
-  - Built-in 5-way joystick
-  - Built-in buzzer
+  - Adafruit Fruit Jam
+  - HDMI monitor
+  - Adafruitt SNES controller clone
+  - tiny speaker
 
 ---
 
@@ -98,8 +98,8 @@ The game starts automatically when you plug in the device. Enjoy! 🎮
 
 ### Display
 - Original Pac-Man: 224x288 pixels
-- Wio Terminal: 240x320 pixels (portrait mode)
-- Game area is centered with a small border
+- Fruit Jam 640x480 pixels (landscape mode)
+- Game area is centered 
 
 ### Ghost AI
 Each ghost has unique targeting behavior:
@@ -142,7 +142,5 @@ This project is provided for educational purposes. See [LICENSE](LICENSE) for de
 - [Adafruit](https://adafruit.com/) for CircuitPython and incredible learning resources
 - [Seeed Studio](https://www.seeedstudio.com/) for the Wio Terminal
 - The [Pac-Man Dossier](https://www.gamedeveloper.com/design/the-pac-man-dossier) for detailed game mechanics documentation
+- Forked from https://github.com/scarolan/pac-wio/tree/main
 
----
-
-*Made with 💛 and lots of dots*
