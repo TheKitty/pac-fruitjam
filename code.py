@@ -43,15 +43,15 @@ except ImportError:
 # =============================================================================
 
 # Screen dimensions (Fruit Jam native)
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+SCREEN_WIDTH = 320
+SCREEN_HEIGHT = 240
 
 # Game area dimensions (from sprite sheet)
 GAME_WIDTH = 224
 GAME_HEIGHT = 248
 
 # Scale factor for display (2x looks good on 640x480)
-SCALE = 2
+SCALE = 1
 SCALED_GAME_WIDTH = GAME_WIDTH * SCALE
 SCALED_GAME_HEIGHT = GAME_HEIGHT * SCALE
 
@@ -68,9 +68,9 @@ MAZE_COLS = 28
 MAZE_ROWS = 31
 
 # Movement speeds (pixels per frame at game resolution)
-PACMAN_SPEED = 2.3  #$ was 1.3
-GHOST_SPEED = 2.22  # was 1.22
-FRAME_DELAY = 0.001  # ~60 FPS target  was 0.016
+PACMAN_SPEED = 1.3  #$ was 1.3
+GHOST_SPEED = 1.22  # was 1.22
+FRAME_DELAY = 0.016  # ~60 FPS target  was 0.016
 
 # Directions
 DIR_NONE = 0
@@ -189,7 +189,7 @@ class SNESController:
         self.button_select = False
         self.button_l = False
         self.button_r = False
-        self.buf = array.array("B", [0] * 64)
+        self.buf = array.array("B", [0] * 16)
         self.idle_state = None
         self.endpoint_address = None
         self._find_controller()
@@ -234,7 +234,7 @@ class SNESController:
             return
         
         try:
-            count = self.device.read(self.endpoint_address, self.buf)
+            count = self.device.read(self.endpoint_address, self.buf, timeout=10)
             
             # Capture idle state on first read
             if self.idle_state is None:
@@ -351,7 +351,7 @@ class JOYSTICKController:
             return
         
         try:
-            count = self.device.read(self.endpoint_address, self.buf)
+            count = self.device.read(self.endpoint_address, self.buf, timeout=10)
             
             if count >= 9:
                 # Parse Bytes 1-2 (X) and 3-4 (Y) as Little-Endian Signed Shorts
@@ -696,7 +696,7 @@ displayio.release_displays()
 print("Initializing DVI display...")
 try:
     # Initialize Fruit Jam display (640x480 DVI)
-    request_display_config(640, 480)
+    request_display_config(SCREEN_WIDTH, SCREEN_HEIGHT)
     display = supervisor.runtime.display
     print(f"Display: {display.width}x{display.height}")
 except Exception as e:
@@ -1301,8 +1301,8 @@ class Ghost:
                 tx, ty = self.scatter_target
             elif self.mode == MODE_EATEN:
                 tx, ty = 13, 11
-                if self.tile_y == 11 and self.tile_x in (13, 14):
-                    tx, ty = 13, 14
+                if self.tile_y in (11, 12, 13) and self.tile_x in (13, 14):
+                    tx, ty = 13, self.tile_y + 3
                 if self.tile_y >= 14 and self.tile_x in (13, 14):
                     self.mode = current_mode
                     self.in_house = True
@@ -1519,8 +1519,8 @@ except Exception as e:
     print(f"Label error: {e}")
 
 def calibrate_joystick():
-    calibrate_instr1 = label.Label(font, text="Move joystick to", color=0xFFFFFF, x=100, y=50, scale=3)
-    calibrate_instr2 = label.Label(font, text="all four corners", color=0xFFFFFF, x=100, y=100, scale=3)
+    calibrate_instr1 = label.Label(font, text="Move joystick to", color=0xFFFFFF, x=100, y=50, scale=SCALE)
+    calibrate_instr2 = label.Label(font, text="all four corners", color=0xFFFFFF, x=100, y=100, scale=SCALE)
     main_group.append(calibrate_instr1)
     main_group.append(calibrate_instr2)
     limits = []
@@ -1528,7 +1528,7 @@ def calibrate_joystick():
         controller.update()
         if controller.axis_x not in limits:
             limits.append(controller.axis_x)
-    controller.DEADZONE = max(limits) // 2
+    controller.DEADZONE = (max(limits) - min(limits)) // 4
     print(f"Joystick calibration deadzone: {controller.DEADZONE}")
     main_group.pop()
     main_group.pop()
