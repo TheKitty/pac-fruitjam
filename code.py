@@ -206,19 +206,6 @@ class SNESController:
                         self.device = device
                         self.device.set_configuration()
                         self.endpoint_address = endpoint_address
-                        
-                        # Detach kernel driver if active
-                        # I don't this is necessary for gamepads as I don't
-                        # think a gamepad would be on the same device as a boot device
-                        #for intf in range(3):
-                        #    try:
-                        #        if self.device.is_kernel_driver_active(intf):
-                        #            self.device.detach_kernel_driver(intf)
-
-                        #            self.detached.append(intf)
-                        #    except usb.core.USBError
-                        #        pass
-                        
                         self.connected = True
                         print(f"Controller: {device.manufacturer} {device.product}")
                         return
@@ -324,19 +311,6 @@ class JOYSTICKController:
                         self.device = device
                         self.device.set_configuration()
                         self.endpoint_address = endpoint_address
-                        
-                        # Detach kernel driver if active
-                        # I don't this is necessary for joysticks as I don't
-                        # think a joystick would be on the same device as a boot device
-                        #for intf in range(3):
-                        #    try:
-                        #        if self.device.is_kernel_driver_active(intf):
-                        #            self.device.detach_kernel_driver(intf)
-
-                        #            self.detached.append(intf)
-                        #    except usb.core.USBError
-                        #        pass
-                        
                         self.connected = True
                         print(f"Controller: {device.manufacturer} {device.product}")
                         return
