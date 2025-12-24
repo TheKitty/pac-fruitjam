@@ -51,7 +51,7 @@ GAME_WIDTH = 224
 GAME_HEIGHT = 248
 
 # Scale factor for display (2x looks good on 640x480)
-SCALE = 1
+SCALE = round(SCREEN_WIDTH / 320) 
 SCALED_GAME_WIDTH = GAME_WIDTH * SCALE
 SCALED_GAME_HEIGHT = GAME_HEIGHT * SCALE
 
@@ -1519,8 +1519,21 @@ except Exception as e:
     print(f"Label error: {e}")
 
 def calibrate_joystick():
-    calibrate_instr1 = label.Label(font, text="Move joystick to", color=0xFFFFFF, x=100, y=50, scale=SCALE)
-    calibrate_instr2 = label.Label(font, text="all four corners", color=0xFFFFFF, x=100, y=100, scale=SCALE)
+    calibrate_instr1 = label.Label(
+        font,
+        text="Move joystick to",
+        color=0xFFFFFF,
+        x=(OFFSET_X // SCALE) + int(.075 * SCREEN_WIDTH),
+        y=int(.1 * SCREEN_HEIGHT),
+        scale=SCALE)
+    calibrate_instr2 = label.Label(
+        font,
+        text="all four corners",
+        color=0xFFFFFF,
+        x=(OFFSET_X // SCALE) + int(.075 * SCREEN_WIDTH),
+        y=int(.15 * SCREEN_HEIGHT),
+        scale=SCALE)
+
     main_group.append(calibrate_instr1)
     main_group.append(calibrate_instr2)
     limits = []
